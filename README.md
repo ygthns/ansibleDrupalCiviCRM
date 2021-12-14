@@ -18,6 +18,25 @@ This role installs the following on an Ubuntu 20.04 (by default) linux VM:
 
 Configuration works with multiple operating systems and with multiple webservers. You can switch between Apache and Nginx (depending on which server you prefer) with ease. Apache is the webserver used out of the box.
 
+## Role Variables
+
+| Variable        | Required | Default       | Choices                   | Comments                               |
+| --------------- | -------- | ------------- | ------------------------- | -------------------------------------- |
+| image_id        | yes      |               |                           | Image ID of the Cloud Service Provider |
+| hostname        | yes      |               |                           | Selected                               |
+| server_name     | yes      |               |                           | Name of the db to import               |
+| network         | yes      |               |                           | Target host for database and proxy     |
+| datacenter_node | yes      |               |                           | Name of reverse proxy.                 |
+| type            | yes      |               |                           | Name of the db to import               |
+| leo_url         | yes      |               |                           | Target host for database and proxy     |
+| user_token      | yes      |               |                           | Name of reverse proxy.                 |
+| user_name       | yes      | root          |                           | Username to login with                 |
+| user_password   | yes      | j*LqpnwlC9pi  |                           | Password of the username to login with |
+| dbname          | yes      | drupaldb      |                           | Name of the db to import               |
+| host            | yes      | localhost     |                           | Target host for database and proxy     |
+| proxy           | yes      | apache        | nginx                     | Name of reverse proxy.                 |
+| domain          | yes      |               |                           | Domain address of preferred website    |
+
 ## Example Playbook
 
 ```yaml
