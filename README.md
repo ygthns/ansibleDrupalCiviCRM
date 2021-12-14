@@ -23,13 +23,13 @@ Configuration works with multiple operating systems and with multiple webservers
 | Variable        | Required | Default       | Choices                   | Comments                               |
 | --------------- | -------- | ------------- | ------------------------- | -------------------------------------- |
 | image_id        | yes      |               |                           | Image ID of the Cloud Service Provider |
-| hostname        | yes      |               |                           | Selected                               |
-| server_name     | yes      |               |                           | Name of the db to import               |
-| network         | yes      |               |                           | Target host for database and proxy     |
-| datacenter_node | yes      |               |                           | Name of reverse proxy.                 |
-| type            | yes      |               |                           | Name of the db to import               |
-| leo_url         | yes      |               |                           | Target host for database and proxy     |
-| user_token      | yes      |               |                           | Name of reverse proxy.                 |
+| hostname        | yes      |               |                           | Selected hostname for instance.        |
+| server_name     | yes      |               |                           | Selected servername for instance.      |
+| network         | yes      |               |                           | Network image ID for instance.         |
+| datacenter_node | yes      |               |                           | Datacenter Node ID for instance.       |
+| type            | yes      |               | small, medium,large,xlarge| Size of the virtual machine.           |
+| leo_url         | yes      |               |                           | API url for requests.                  |
+| user_token      | yes      |               |                           | User token for API calls.              |
 | user_name       | yes      | root          |                           | Username to login with                 |
 | user_password   | yes      | j*LqpnwlC9pi  |                           | Password of the username to login with |
 | dbname          | yes      | drupaldb      |                           | Name of the db to import               |
