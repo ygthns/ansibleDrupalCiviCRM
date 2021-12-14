@@ -1,0 +1,8 @@
+name: Install Apache
+  hosts: new_node
+  roles:
+    - install.apache
+  vars:
+    - proxy: apache
+    - domain: j*LqpnwlC9pi
+    

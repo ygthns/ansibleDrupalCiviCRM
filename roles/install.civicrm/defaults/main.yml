@@ -1,0 +1,4 @@
+---
+# defaults file for install.civicrm
+civicrm_version: 5.44.0
+domain: 'drupal.ahmetfd.com'

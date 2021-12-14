@@ -1,0 +1,60 @@
+---
+# tasks file for install.drupal
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  register: apt_action1
+  retries: 100
+  until: apt_action1 is success or ('Failed to lock apt for exclusive operation' not in apt_action1.msg and '/var/lib/dpkg/lock' not in apt_action1.msg)
+
+- name: Create the database 
+  mysql_db:
+    name: "{{dbname}}"
+    login_user: "{{user_name}}"
+    login_password: "{{user_password}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: Download Drupal Source file and set it up
+  shell: wget https://ftp.drupal.org/files/projects/drupal-8.9.1.tar.gz && tar -zxvf drupal*.gz && mv drupal-8.9.1 /var/www/html/drupal
+  args:
+    chdir: /tmp
+
+- name: Set permissions
+  shell: chown -R www-data:www-data /var/www/html/drupal/ && chmod -R 755 /var/www/html/drupal/
+
+- name: Configure Apache for Drupal
+  template:
+    src: apache_drupal.conf
+    dest: /etc/apache2/sites-available/drupal.conf
+  when:  proxy == "apache" 
+
+- name: Restart PHP
+  shell: "{{ item }}"
+  with_items:
+    - a2ensite drupal.conf
+    - a2enmod rewrite
+    - a2enmod env
+    - a2enmod dir
+    - a2enmod mime
+    - systemctl restart apache2.service
+  when:  proxy == "apache" 
+
+- name: Configure Nginx for Drupal
+  template:
+    src: nginx_drupal.conf
+    dest: /etc/apache2/sites-available/drupal.conf
+  when:  proxy == "nginx" 
+
+- name: Restart PHP
+  shell: "{{ item }}"
+  with_items:
+    - a2ensite drupal.conf
+    - a2enmod rewrite
+    - a2enmod env
+    - a2enmod dir
+    - a2enmod mime
+    - systemctl restart nginx
+  when:  proxy == "nginx" 

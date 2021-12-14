@@ -1,0 +1,9 @@
+- name: Install mariadb for selected instance
+  hosts: new_node
+  roles:
+    - install.mariadb
+  vars:
+    - login_user: root
+    - mysql_root_password: j*LqpnwlC9pi
+    - dbname: drupaldb
+    - host: localhost

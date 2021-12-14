@@ -1,0 +1,10 @@
+- name: Create a db with specified name
+  hosts: newnode
+  roles:
+    - uninstall.drupal
+  vars:
+    - user_name: root
+    - user_password: j*LqpnwlC9pi
+    - dbname: drupaldb
+    - host: localhost
+    - proxy: apache

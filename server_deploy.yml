@@ -1,0 +1,17 @@
+- name: Deploy Server
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    -  role: server.deploy
+  vars:
+    - image_id: ""         
+    - hostname: "" 
+    - server_name: "" 
+    - network: ""
+    - datacenter_node: ""
+    - type: "small"
+    - leo_url: 
+    - user_token: ""
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: false

@@ -1,0 +1,14 @@
+- name: Install Drupal
+  hosts: newnode
+  roles:
+    -  role: install.drupal
+  vars:
+    - proxy: apache
+    - domain: drupal.ahmetfd.com
+    - user_name: root
+    - user_password: j*LqpnwlC9pi
+    - dbname: drupaldb
+    - host: localhost
+    - proxy: apache
+
+

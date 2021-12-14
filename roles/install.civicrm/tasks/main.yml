@@ -1,0 +1,61 @@
+---
+# tasks file for install.civicrm
+# - name: Install dependicies
+#   apt:
+#     name: "{{ item }}"
+#     state: present
+#     update_cache: yes
+#   with_items:
+#     - php-cli
+#     - unzip
+#     - php-mysql
+
+# - name: Install Composer
+#   shell: "{{ item }}"
+#   with_items:
+#     - curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+#     - sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+#   args:
+#     chdir: /
+
+# - name: Install CiviCRM
+#   shell: "{{ item }}"
+#   with_items:
+#     - echo 'export COMPOSER_COMPILE=all' >> /etc/environment
+
+# - name: Install CiviCRM
+#   shell: source /etc/environment
+#   args:
+#      executable: /bin/bash
+
+# - name: Install CiviCRM
+#   shell: "{{ item }}"
+#   with_items:
+#     - yes 'y' | composer config extra.enable-patching true
+#     - yes 'y' | composer config minimum-stability dev
+#     - yes 'y' | composer require civicrm/civicrm-{core,packages,drupal-8}:'~{{civicrm_version}}' --ignore-platform-reqs
+#     - sudo curl -LsS https://download.civicrm.org/cv/cv.phar -o /usr/local/bin/cv
+#     - sudo chmod +x /usr/local/bin/cv
+#     - wget https://download.civicrm.org/civicrm-{{civicrm_version}}-l10n.tar.gz
+#     - tar -zxvf civicrm-{{civicrm_version}}-l10n.tar.gz
+#   args:
+#     chdir: /var/www/html/drupal/
+#     executable: /bin/bash
+
+# - name: Copy language and sql files for civicrm
+#   shell: "{{ item }}"
+#   with_items:
+#     - cp -R l10n/ ../vendor/civicrm/civicrm-core/
+#     - cp -R sql/ ../vendor/civicrm/civicrm-core/
+#   args:
+#     chdir: /var/www/html/drupal/civicrm/
+
+- name: Copy language and sql files for civicrm
+  shell: "{{ item }}"
+  with_items:
+#    - rm -rf civicrm/
+#    - apt-get purge php8* -y
+    - cv core:install --cms-base-url='{{domain}}' --lang=en_GB -m loadGenerated=1 -v
+  args:
+    chdir: /var/www/html/drupal/
+

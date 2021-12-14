@@ -1,0 +1,11 @@
+---
+- name: Delete edge server
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    -  role: server.delete
+  vars:
+    - vm_id: ""
+    - user_token: ""
+    - leo_url: 

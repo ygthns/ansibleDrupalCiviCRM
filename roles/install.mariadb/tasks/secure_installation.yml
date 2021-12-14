@@ -1,0 +1,63 @@
+- name: Check if custom password is specified for root user
+  debug:
+    msg: >
+      WARNING DETECTED !!! the password for mysql root user is empty.
+      Please set a password with a variable mysql_root_password on defaults/main.yml
+      te secure the root user.
+  when: not mysql_root_password
+
+- name: Check if mysql root password was not set
+  shell: >
+    mysql -u root
+    -h localhost
+    -e "quit"
+  changed_when: false
+  ignore_errors: true
+  register: check_passwd_root
+
+- name: Delete remote login connection
+  shell: >
+    mysql -u root
+    -h localhost
+    -e "delete from mysql.user where User='root' and Host NOT IN ('localhost', '127.0.0.1');"
+  ignore_errors: true
+
+- name: Set MariaDB root password for root
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}"
+    login_user: root
+    #login_password: "{{ mysql_root_password }}"
+    login_unix_socket: "/var/run/mysqld/mysqld.sock"
+    state: present
+  with_items:
+    - 127.0.0.1
+    - localhost
+  notify: Flush Priviliges
+  ignore_errors: true
+
+- name: Remove all anonymous user
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: 'ansible'
+    host_all: yes
+    state: absent
+  notify: Flush Priviliges
+  ignore_errors: true
+
+- name: Remove test database
+  mysql_db:
+    login_user: "root"
+    login_password: "{{ mysql_root_password }}"
+    db: "test"
+    state: absent
+  register: remove_test_db
+  notify:
+    - Remove test database priviledges
+    - Flush Priviliges
+  ignore_errors: true
+
+- name: Ensure mariadb is started and enabled to start at boot.
+  service: name=mariadb state=started enabled=yes

@@ -1,0 +1,25 @@
+---
+# tasks file for uninstall.drupal
+- name: Remove drupal and apache config
+  shell: "{{ item }}"
+  with_items:
+    - rm -rf /var/www/html/drupal
+    - rm -rf /etc/apache2/sites-available/drupal.conf
+    - systemctl restart apache2.service
+  when:  proxy == "apache" 
+
+- name: Remove drupal and nginx config
+  shell: "{{ item }}"
+  with_items:
+    - rm -rf /var/www/html/drupal
+    - rm -rf /etc/nginx/sites-available/drupal.conf
+    - systemctl restart apache2.service
+  when:  proxy == "nginx" 
+
+- name: Remove the database 
+  mysql_db:
+    name: "{{dbname}}"
+    login_user: "{{user_name}}"
+    login_password: "{{user_password}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: absent

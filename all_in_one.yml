@@ -1,0 +1,41 @@
+
+- name: Deploy Server
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    -  role: server.deploy
+  vars:
+    - image_id: ""         
+    - hostname: "" 
+    - server_name: "" 
+    - network: ""
+    - datacenter_node: ""
+    - type: "small"
+    - leo_url: 
+    - user_token: ""
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: false
+
+- name: Set up drupal+civicrm+apache+mariadb+php
+  hosts: newnode
+  become: false
+  gather_facts: yes
+  roles:
+    -  role: install.apache
+    -  role: install.mariadb
+    -  role: install.php
+    -  role: install.drupal
+    -  role: install.civicrm
+  vars:
+    - proxy: apache
+    - domain: 
+    - login_user: drupal_user
+    - login_password: 
+    - user_name: root
+    - user_password: j*LqpnwlC9pi
+    - mysql_root_password: j*LqpnwlC9pi
+    - dbname: drupaldb
+    - host: localhost
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: false

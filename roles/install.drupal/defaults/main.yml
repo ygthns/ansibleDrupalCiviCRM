@@ -1,0 +1,9 @@
+---
+# defaults file for install.drupal
+civicrm_version: 5.44.0
+domain: 'drupal.ahmetfd.com'
+user_name: root
+user_password: j*LqpnwlC9pi
+dbname: drupaldb
+host: localhost
+proxy: apache

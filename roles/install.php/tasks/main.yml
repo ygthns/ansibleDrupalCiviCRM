@@ -1,0 +1,43 @@
+---
+- name: Repo Update
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install server properties
+  become: yes
+  apt: name=software-properties-common state=latest
+
+- name: Install the PHP Repository
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    state: present
+
+- name: Repo update
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install PHP7.2
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - php7.2
+    - libapache2-mod-php7.2
+    - php7.2-common
+    - php7.2-mbstring
+    - php7.2-xmlrpc
+    - php7.2-soap
+    - php7.2-gd
+    - php7.2-xml
+    - php7.2-intl
+    - php7.2-mysql
+    - php7.2-cli
+    - php7.2-zip
+    - php7.2-curl
+  register: apt_action
+  retries: 100
+  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+

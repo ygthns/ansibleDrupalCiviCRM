@@ -1,0 +1,4 @@
+- name: Install NGINX
+  hosts: new_node
+  roles:
+    - install.nginx

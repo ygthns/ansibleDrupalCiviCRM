@@ -1,0 +1,21 @@
+---
+# tasks file for install.apache
+- name: Update cache and upgrade if specified.
+  become: true
+  apt:
+    update_cache: yes
+  register: apt_action
+  retries: 100
+  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+
+- name: install apache2
+  apt: 
+    name: apache2
+    state: present
+    update_cache: yes
+  register: apt_action
+  retries: 100
+  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+
+- name: Ensure apache2 is started and enabled to start at boot.
+  service: name=apache2 state=started enabled=yes

@@ -1,0 +1,6 @@
+---
+- name: Install mariadb
+  include_tasks: "install_mariadb.yml"
+
+- name: Complete secure installation and create db
+  include_tasks: "secure_installation.yml"
